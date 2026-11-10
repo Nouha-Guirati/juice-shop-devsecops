@@ -1,0 +1,25 @@
+# Hooks locaux : secrets et contrôles de sécurité
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  - repo: https://github.com/semgrep/pre-commit
+    rev: v1.184.0
+    hooks:
+      - id: semgrep
+        args:
+          - '--config'
+          - 'p/javascript'
+          - '--config'
+          - 'p/owasp-top-ten'
+          - '--error'
+          - '--skip-unknown-extensions'
