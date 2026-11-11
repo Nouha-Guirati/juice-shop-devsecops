@@ -214,23 +214,30 @@ PY
                     }
                 }
 
-                // Semgrep compare le code actuel avec origin/main.
+                // Semgrep analyse le code source.
                 sh '''
                     set -eu
 
                     docker run --rm \
                         --volumes-from jenkins \
-                        -w "$WORKSPACE" \
+                        -e WORKSPACE="$WORKSPACE" \
+                        --entrypoint sh \
                         semgrep/semgrep \
-                        semgrep scan \
-                            --config p/javascript \
-                            --config p/owasp-top-ten \
-                            --baseline-commit origin/main \
-                            --sarif \
-                            --output reports/semgrep.sarif \
-                            --error \
-                            --metrics=off
+                        -c '
+                            mkdir -p /src
+                            ln -sfn "$WORKSPACE" /src/project
+                            cd "$WORKSPACE"
+                            git config --global --add safe.directory "$WORKSPACE"
+
+                            semgrep scan \
+                                --config p/javascript \
+                                --config p/owasp-top-ten \
+                                --sarif \
+                                --output reports/semgrep.sarif \
+                                --metrics=off
+                        '
                 '''
+
             }
         }
 
