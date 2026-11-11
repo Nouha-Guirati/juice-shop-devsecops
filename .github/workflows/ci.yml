@@ -253,11 +253,9 @@ jobs:
           start: npm start
           wait-on: http://127.0.0.1:3000
           wait-on-timeout: 90
-          record: true
         env:
           SOLUTIONS_WEBHOOK: ${{ secrets.E2E_SOLUTIONS_WEBHOOK }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   smoke-test:
     runs-on: ubuntu-latest
