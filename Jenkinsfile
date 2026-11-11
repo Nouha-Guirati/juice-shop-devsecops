@@ -414,11 +414,30 @@ PY
             }
         }
 
-        // 11. DAST - RESERVE
-        stage('DAST - A integrer') {
+        // 11. DAST - OWASP ZAP
+        stage('DAST - OWASP ZAP') {
             steps {
-                echo 'DAST non execute.'
-                echo 'Etape reservee pour integration OWASP ZAP.'
+                echo 'Analyse dynamique de Juice Shop avec OWASP ZAP'
+
+                sh '''
+                    set -eu
+
+                    mkdir -p "$WORKSPACE/reports"
+
+                    docker run --rm \
+                        --network devsecops \
+                        --volumes-from jenkins \
+                        --user "$(id -u):$(id -g)" \
+                        zaproxy/zap-stable \
+                        zap-baseline.py \
+                            -t http://juice-shop-staging:3000 \
+                            -m 3 \
+                            -I \
+                            -r "$WORKSPACE/reports/zap-report.html" \
+                            -J "$WORKSPACE/reports/zap-report.json"
+
+                    echo "OWASP ZAP DAST SCAN TERMINE"
+                '''
             }
         }
 
