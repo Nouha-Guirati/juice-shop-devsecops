@@ -224,17 +224,18 @@ PY
                         --entrypoint sh \
                         semgrep/semgrep \
                         -c '
-                            mkdir -p /src
-                            ln -sfn "$WORKSPACE" /src/project
                             cd "$WORKSPACE"
+                            mkdir -p reports
                             git config --global --add safe.directory "$WORKSPACE"
 
                             semgrep scan \
                                 --config p/javascript \
                                 --config p/owasp-top-ten \
+                                --no-git-ignore \
                                 --sarif \
                                 --output reports/semgrep.sarif \
-                                --metrics=off
+                                --metrics=off \
+                                .
                         '
                 '''
 
