@@ -184,7 +184,7 @@ PY
 
                     trap restore_baseline EXIT
 
-                    // Ne pas scanner le fichier de baseline lui-meme.
+                    # Ne pas scanner le fichier de baseline lui-meme.
                     rm "$BASELINE"
 
                     gitleaks dir \
